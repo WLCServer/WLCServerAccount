@@ -13,6 +13,7 @@ interface Account : Entity<Account> {
     var gender: Gender
     var email: String?
     var phone: String?
+    var registerIp: String
     var registerTime: LocalDateTime
     var lastLoginTime: LocalDateTime
     var lastLogoutTime: LocalDateTime

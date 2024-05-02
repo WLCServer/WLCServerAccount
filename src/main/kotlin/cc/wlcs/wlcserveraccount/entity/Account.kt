@@ -31,22 +31,23 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
 
     fun add(player: Player): Boolean {
         WLCServerAccount.instance.database.accounts
-            .add(Account{
+            .add(Account {
                 name = player.username
                 uuid = player.uniqueId.toString()
+                registerIp = player.remoteAddress.hostName
                 registerTime = LocalDateTime.now()
                 lastLoginTime = LocalDateTime.now()
             })
         return true
     }
 
-    fun getPlayerName(): String? {
+    fun getPlayerName(): String {
         if (name != null) {
             return name
         } else if (uuid != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
-            }?.name
+            }!!.name
         }
         throw NullPointerException("name and uuid cannot both be null")
     }
@@ -56,59 +57,59 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.name = playerName
-                account.flushChanges()
-                return true
+            account.name = playerName
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.name = playerName
-                account.flushChanges()
-                return true
+            account.name = playerName
+            account.flushChanges()
+            return true
         }
         return false
     }
 
-    fun getPlayerUniqueId(): UUID? {
+    fun getPlayerUniqueId(): UUID {
         if (name != null) {
             return UUID.fromString(WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
-            }?.uuid)
+            }!!.uuid)
         } else if (uuid != null) {
             return uuid
         }
         throw NullPointerException("name and uuid cannot both be null")
     }
 
-    fun setPlayerUniqueId(uuid: UUID): Boolean {
+    fun setPlayerUniqueId(playerUniqueId: UUID): Boolean {
         if (name != null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.uuid = uuid.toString()
-                account.flushChanges()
-                return true
-        } else if (uuid != null) {
+            account.uuid = playerUniqueId.toString()
+            account.flushChanges()
+            return true
+        } else if (this.uuid != null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.uuid = uuid.toString()
-                account.flushChanges()
-                return true
+            account.uuid = playerUniqueId.toString()
+            account.flushChanges()
+            return true
         }
         return false
     }
 
-    fun getGender(): Gender? {
+    fun getGender(): Gender {
         if (name != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
-            }?.gender
+            }!!.gender
         } else if (uuid != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
-            }?.gender
+            }!!.gender
         }
         throw NullPointerException("name and uuid cannot both be null")
     }
@@ -118,16 +119,16 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.gender = gender
-                account.flushChanges()
-                return true
+            account.gender = gender
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.gender = gender
-                account.flushChanges()
-                return true
+            account.gender = gender
+            account.flushChanges()
+            return true
         }
         return false
     }
@@ -150,16 +151,16 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.email = email
-                account.flushChanges()
-                return true
+            account.email = email
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.email = email
-                account.flushChanges()
-                return true
+            account.email = email
+            account.flushChanges()
+            return true
         }
         return false
     }
@@ -182,29 +183,61 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.phone = phone
-                account.flushChanges()
-                return true
+            account.phone = phone
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.phone = phone
-                account.flushChanges()
-                return true
+            account.phone = phone
+            account.flushChanges()
+            return true
         }
         return false
     }
 
-    fun getRegisterTime(): LocalDateTime? {
+    fun getRegisterIp(): String {
         if (name != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
-            }?.registerTime
+            }!!.registerIp
         } else if (uuid != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
-            }?.registerTime
+            }!!.registerIp
+        }
+        throw NullPointerException("name and uuid cannot both be null")
+    }
+
+    fun setRegisterIp(ip: String): Boolean {
+        if (name != null) {
+            val account = WLCServerAccount.instance.database.accounts.find {
+                it.name eq name
+            } ?: return false
+            account.registerIp = ip
+            account.flushChanges()
+            return true
+        } else if (uuid != null) {
+            val account = WLCServerAccount.instance.database.accounts.find {
+                it.uuid eq uuid.toString()
+            } ?: return false
+            account.registerIp = ip
+            account.flushChanges()
+            return true
+        }
+        return false
+    }
+
+    fun getRegisterTime(): LocalDateTime {
+        if (name != null) {
+            return WLCServerAccount.instance.database.accounts.find {
+                it.name eq name
+            }!!.registerTime
+        } else if (uuid != null) {
+            return WLCServerAccount.instance.database.accounts.find {
+                it.uuid eq uuid.toString()
+            }!!.registerTime
         }
         throw NullPointerException("name and uuid cannot both be null")
     }
@@ -214,29 +247,29 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.registerTime = time
-                account.flushChanges()
-                return true
+            account.registerTime = time
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
-          val account = WLCServerAccount.instance.database.accounts.find {
+            val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.registerTime = time
-                account.flushChanges()
-                return true
+            account.registerTime = time
+            account.flushChanges()
+            return true
         }
         return false
     }
 
-    fun getLastLoginTime(): LocalDateTime? {
+    fun getLastLoginTime(): LocalDateTime {
         if (name != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
-            }?.lastLoginTime
+            }!!.lastLoginTime
         } else if (uuid != null) {
             return WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
-            }?.lastLoginTime
+            }!!.lastLoginTime
         }
         throw NullPointerException("name and uuid cannot both be null")
     }
@@ -246,16 +279,16 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.lastLoginTime = time
-                account.flushChanges()
-                return true
+            account.lastLoginTime = time
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
-          val account = WLCServerAccount.instance.database.accounts.find {
+            val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.lastLoginTime = time
-                account.flushChanges()
-                return true
+            account.lastLoginTime = time
+            account.flushChanges()
+            return true
         }
         return false
     }
@@ -278,16 +311,16 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
             val account = WLCServerAccount.instance.database.accounts.find {
                 it.name eq name
             } ?: return false
-                account.lastLogoutTime = time
-                account.flushChanges()
-                return true
+            account.lastLogoutTime = time
+            account.flushChanges()
+            return true
         } else if (uuid != null) {
-          val account = WLCServerAccount.instance.database.accounts.find {
+            val account = WLCServerAccount.instance.database.accounts.find {
                 it.uuid eq uuid.toString()
             } ?: return false
-                account.lastLogoutTime = time
-                account.flushChanges()
-                return true
+            account.lastLogoutTime = time
+            account.flushChanges()
+            return true
         }
         return false
     }

@@ -14,6 +14,7 @@ object Accounts : Table<Account>("account") {
     val gender = enum<Gender>("gender").bindTo { it.gender }
     val email = varchar("email").bindTo { it.email }
     val phone = varchar("phone").bindTo { it.phone }
+    val registerIp = varchar("register_ip").bindTo { it.registerIp }
     val registerTime = datetime("register_time").bindTo { it.registerTime }
     val lastLoginTime = datetime("lastlogin_time").bindTo { it.lastLoginTime }
     val lastLogoutTime = datetime("lastlogout_time").bindTo { it.lastLogoutTime }
