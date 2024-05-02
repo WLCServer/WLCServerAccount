@@ -16,6 +16,6 @@ interface Account : Entity<Account> {
     var registerIp: String
     var registerTime: LocalDateTime
     var lastLoginTime: LocalDateTime
-    var lastLogoutTime: LocalDateTime
+    var lastLogoutTime: LocalDateTime?
 
 }
