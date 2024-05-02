@@ -13,11 +13,11 @@ interface MainConfig {
 
     @ConfKey("mysql.user")
     @DefaultString("root")
-    @Order(11)
+    @Order(20)
     fun MysqlUser(): String
 
     @ConfKey("mysql.password")
     @DefaultString("password")
-    @Order(12)
+    @Order(30)
     fun MysqlPassword(): String
 }

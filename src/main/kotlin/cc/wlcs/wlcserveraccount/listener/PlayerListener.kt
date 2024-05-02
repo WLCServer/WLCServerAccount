@@ -1,5 +1,6 @@
 package cc.wlcs.wlcserveraccount.listener
 
+import cc.wlcs.wlcserveraccount.WLCServerAccount
 import cc.wlcs.wlcserveraccount.entity.Account
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
@@ -16,6 +17,12 @@ class PlayerListener {
             account.setLastLoginTime(LocalDateTime.now())
         } else {
             account.add(player)
+            val lang = WLCServerAccount.instance.langConfig.getConfigData()
+            player.sendMessage(
+                WLCServerAccount.instance.miniMessage.deserialize(
+                    lang.prefix() + lang.firstJoinTip().replace("%id%", account.getId().toString())
+                )
+            )
         }
     }
 

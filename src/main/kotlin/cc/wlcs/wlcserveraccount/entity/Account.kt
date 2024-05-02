@@ -12,7 +12,7 @@ import org.ktorm.entity.find
 import java.time.LocalDateTime
 import java.util.UUID
 
-data class Account(val name: String? = null, val uuid: UUID? = null) {
+data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID? = null) {
 
     fun exist(): Boolean {
         if (name != null) {
@@ -39,6 +39,19 @@ data class Account(val name: String? = null, val uuid: UUID? = null) {
                 lastLoginTime = LocalDateTime.now()
             })
         return true
+    }
+
+    fun getId(): Int {
+       if (name != null) {
+            return WLCServerAccount.instance.database.accounts.find {
+                it.name eq name
+            }!!.id
+        } else if (uuid != null) {
+            return WLCServerAccount.instance.database.accounts.find {
+                it.uuid eq uuid.toString()
+            }!!.id
+        }
+        throw NullPointerException("name and uuid cannot both be null")
     }
 
     fun getPlayerName(): String {
