@@ -12,6 +12,7 @@ object Accounts : Table<Account>("account") {
     val name = varchar("name").bindTo { it.name }
     val uuid = varchar("uuid").bindTo { it.uuid }
     val gender = enum<Gender>("gender").bindTo { it.gender }
+    val qq = varchar("qq").bindTo { it.qq }
     val email = varchar("email").bindTo { it.email }
     val phone = varchar("phone").bindTo { it.phone }
     val registerIp = varchar("register_ip").bindTo { it.registerIp }

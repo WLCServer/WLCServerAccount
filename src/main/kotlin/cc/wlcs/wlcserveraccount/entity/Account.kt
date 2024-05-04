@@ -181,6 +181,47 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
         }
     }
 
+    fun getQQ(): String? {
+        val identifier = when {
+            id != null -> id
+            name != null -> name
+            uuid != null -> uuid
+            else -> throw NullPointerException("id, name and uuid cannot all be null")
+        }
+        return WLCServerAccount.instance.database.accounts.find {
+            when (identifier) {
+                is Int -> it.id eq identifier
+                is String -> it.name eq identifier
+                is UUID -> it.uuid eq identifier.toString()
+                else -> throw NullPointerException("id, name and uuid cannot all be null")
+            }
+        }?.qq
+    }
+
+    fun setQQ(qq: String): Boolean {
+        val identifier = when {
+            id != null -> id
+            name != null -> name
+            uuid != null -> uuid
+            else -> throw NullPointerException("id, name and uuid cannot all be null")
+        }
+        val account = WLCServerAccount.instance.database.accounts.find {
+            when (identifier) {
+                is Int -> it.id eq identifier
+                is String -> it.name eq identifier
+                is UUID -> it.uuid eq identifier.toString()
+                else -> throw NullPointerException("id, name and uuid cannot all be null")
+            }
+        }
+        return if (account != null) {
+            account.qq = qq
+            account.flushChanges()
+            true
+        } else {
+            throw NullPointerException("The account does not exist")
+        }
+    }
+
     fun getEmail(): String? {
         val identifier = when {
             id != null -> id

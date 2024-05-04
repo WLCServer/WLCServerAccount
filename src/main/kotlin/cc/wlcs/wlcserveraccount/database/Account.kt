@@ -11,6 +11,7 @@ interface Account : Entity<Account> {
     var name: String
     var uuid: String
     var gender: Gender
+    var qq: String?
     var email: String?
     var phone: String?
     var registerIp: String
