@@ -29,16 +29,16 @@ class WLCServerAccount {
 
     companion object {
         lateinit var instance: WLCServerAccount
+        lateinit var mainConfig: ConfigManager<MainConfig>
+        lateinit var langConfig: ConfigManager<LangConfig>
+        private val dataSource = MysqlConnectionPoolDataSource()
+        lateinit var database: Database
+        lateinit var miniMessage: MiniMessage
     }
 
     lateinit var logger: Logger
     lateinit var proxyServer: ProxyServer
     lateinit var dataDirectory: Path
-    lateinit var mainConfig: ConfigManager<MainConfig>
-    lateinit var langConfig: ConfigManager<LangConfig>
-    private val dataSource = MysqlConnectionPoolDataSource()
-    lateinit var database: Database
-    lateinit var miniMessage: MiniMessage
 
     @Inject
     fun WLCServerAccount(

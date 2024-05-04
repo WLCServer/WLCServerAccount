@@ -22,7 +22,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -33,7 +33,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
     }
 
     fun add(player: Player): Boolean {
-        WLCServerAccount.instance.database.accounts
+        WLCServerAccount.database.accounts
             .add(Account {
                 name = player.username
                 uuid = player.uniqueId.toString()
@@ -51,7 +51,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is String -> it.name eq identifier
                 is UUID -> it.uuid eq identifier.toString()
@@ -67,7 +67,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is UUID -> it.uuid eq identifier.toString()
@@ -83,7 +83,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -107,7 +107,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> return uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return UUID.fromString(WLCServerAccount.instance.database.accounts.find {
+        return UUID.fromString(WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -123,7 +123,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -147,7 +147,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -164,7 +164,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -188,7 +188,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -205,7 +205,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -229,7 +229,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -246,7 +246,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -270,7 +270,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -287,7 +287,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -304,6 +304,47 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
         }
     }
 
+    fun getBirthday(): LocalDateTime? {
+        val identifier = when {
+            id != null -> id
+            name != null -> name
+            uuid != null -> uuid
+            else -> throw NullPointerException("id, name and uuid cannot all be null")
+        }
+        return WLCServerAccount.database.accounts.find {
+            when (identifier) {
+                is Int -> it.id eq identifier
+                is String -> it.name eq identifier
+                is UUID -> it.uuid eq identifier.toString()
+                else -> throw NullPointerException("id, name and uuid cannot all be null")
+            }
+        }?.birthday
+    }
+
+    fun setBirthday(birthday: LocalDateTime): Boolean {
+        val identifier = when {
+            id != null -> id
+            name != null -> name
+            uuid != null -> uuid
+            else -> throw NullPointerException("id, name and uuid cannot all be null")
+        }
+        val account = WLCServerAccount.database.accounts.find {
+            when (identifier) {
+                is Int -> it.id eq identifier
+                is String -> it.name eq identifier
+                is UUID -> it.uuid eq identifier.toString()
+                else -> throw NullPointerException("id, name and uuid cannot all be null")
+            }
+        }
+        return if (account != null) {
+            account.birthday = birthday
+            account.flushChanges()
+            true
+        } else {
+            throw NullPointerException("The account does not exist")
+        }
+    }
+
     fun getRegisterIp(): String {
         val identifier = when {
             id != null -> id
@@ -311,7 +352,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -328,7 +369,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -352,7 +393,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -369,7 +410,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -393,7 +434,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -410,7 +451,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -434,7 +475,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        return WLCServerAccount.instance.database.accounts.find {
+        return WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier
@@ -451,7 +492,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
             uuid != null -> uuid
             else -> throw NullPointerException("id, name and uuid cannot all be null")
         }
-        val account = WLCServerAccount.instance.database.accounts.find {
+        val account = WLCServerAccount.database.accounts.find {
             when (identifier) {
                 is Int -> it.id eq identifier
                 is String -> it.name eq identifier

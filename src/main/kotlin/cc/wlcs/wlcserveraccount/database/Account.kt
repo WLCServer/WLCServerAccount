@@ -14,6 +14,7 @@ interface Account : Entity<Account> {
     var qq: String?
     var email: String?
     var phone: String?
+    var birthday: LocalDateTime?
     var registerIp: String
     var registerTime: LocalDateTime
     var lastLoginTime: LocalDateTime
