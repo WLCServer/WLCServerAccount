@@ -1,6 +1,5 @@
 package cc.wlcs.wlcserveraccount.entity
 
-import cc.wlcs.wlcserveraccount.Gender
 import cc.wlcs.wlcserveraccount.WLCServerAccount
 import cc.wlcs.wlcserveraccount.database.Account
 import cc.wlcs.wlcserveraccount.database.Accounts.accounts
@@ -9,6 +8,7 @@ import net.kyori.adventure.text.Component
 import org.ktorm.dsl.*
 import org.ktorm.entity.add
 import org.ktorm.entity.find
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.Optional
 import java.util.UUID
@@ -140,7 +140,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
         }
     }
 
-    fun getGender(): Gender {
+    fun getGender(): String {
         val identifier = when {
             id != null -> id
             name != null -> name
@@ -157,7 +157,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
         }?.gender ?: throw NullPointerException("The account does not exist")
     }
 
-    fun setGender(gender: Gender): Boolean {
+    fun setGender(gender: String): Boolean {
         val identifier = when {
             id != null -> id
             name != null -> name
@@ -304,7 +304,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
         }
     }
 
-    fun getBirthday(): LocalDateTime? {
+    fun getBirthday(): LocalDate? {
         val identifier = when {
             id != null -> id
             name != null -> name
@@ -321,7 +321,7 @@ data class Account(val id: Int? = null, val name: String? = null, val uuid: UUID
         }?.birthday
     }
 
-    fun setBirthday(birthday: LocalDateTime): Boolean {
+    fun setBirthday(birthday: LocalDate): Boolean {
         val identifier = when {
             id != null -> id
             name != null -> name

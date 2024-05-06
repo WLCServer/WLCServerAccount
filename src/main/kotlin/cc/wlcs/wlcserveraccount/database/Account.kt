@@ -1,7 +1,7 @@
 package cc.wlcs.wlcserveraccount.database
 
-import cc.wlcs.wlcserveraccount.Gender
 import org.ktorm.entity.Entity
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 interface Account : Entity<Account> {
@@ -10,11 +10,11 @@ interface Account : Entity<Account> {
     val id: Int
     var name: String
     var uuid: String
-    var gender: Gender
+    var gender: String?
     var qq: String?
     var email: String?
     var phone: String?
-    var birthday: LocalDateTime?
+    var birthday: LocalDate?
     var registerIp: String
     var registerTime: LocalDateTime
     var lastLoginTime: LocalDateTime
