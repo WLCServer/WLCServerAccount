@@ -20,7 +20,7 @@ class PlayerListener {
             val lang = WLCServerAccount.langConfig.getConfigData()
             player.sendMessage(
                 WLCServerAccount.miniMessage.deserialize(
-                    lang.prefix() + lang.firstJoinTip().replace("%id%", account.getId().toString())
+                    lang.prefix() + lang.firstJoinMessage().replace("%id%", account.getId().toString())
                 )
             )
         }

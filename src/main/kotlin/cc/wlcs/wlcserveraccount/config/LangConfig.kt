@@ -11,10 +11,10 @@ interface LangConfig {
     @Order(10)
     fun prefix(): String
 
-    @ConfKey("text.first-join-tip")
+    @ConfKey("text.first-join-message")
     @DefaultString("欢迎来到未来城, 这是您第一次进入服务器, 已为您自动创建账号, 您的WAOID为 %id%, 使用 /account 查看账号信息")
     @Order(20)
-    fun firstJoinTip(): String
+    fun firstJoinMessage(): String
 
     @ConfKey("command.help")
     @DefaultString("")
