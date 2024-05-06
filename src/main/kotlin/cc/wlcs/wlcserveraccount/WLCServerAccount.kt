@@ -1,5 +1,6 @@
 package cc.wlcs.wlcserveraccount
 
+import cc.wlcs.wlcserveraccount.command.AccountCommand
 import cc.wlcs.wlcserveraccount.config.LangConfig
 import cc.wlcs.wlcserveraccount.config.MainConfig
 import cc.wlcs.wlcserveraccount.listener.PlayerListener
@@ -70,6 +71,7 @@ class WLCServerAccount {
         database = Database.connect(dataSource, logger = ConsoleLogger(threshold = LogLevel.WARN))
 
         proxyServer.eventManager.register(this, PlayerListener())
+        proxyServer.commandManager.register("account", AccountCommand())
         miniMessage = MiniMessage.miniMessage()
     }
 
