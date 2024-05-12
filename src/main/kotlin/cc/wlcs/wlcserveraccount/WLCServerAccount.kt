@@ -18,6 +18,7 @@ import org.ktorm.logging.ConsoleLogger
 import org.ktorm.logging.LogLevel
 import org.slf4j.Logger
 import java.nio.file.Path
+import java.time.format.DateTimeFormatter
 
 @Plugin(
     id = "wlcserveraccount",
@@ -35,6 +36,7 @@ class WLCServerAccount {
         private val dataSource = MysqlConnectionPoolDataSource()
         lateinit var database: Database
         lateinit var miniMessage: MiniMessage
+        lateinit var dateTimeFormatter: DateTimeFormatter
     }
 
     lateinit var logger: Logger
@@ -73,6 +75,10 @@ class WLCServerAccount {
         proxyServer.eventManager.register(this, PlayerListener())
         proxyServer.commandManager.register("account", AccountCommand())
         miniMessage = MiniMessage.miniMessage()
+
+        // Set default time formatter
+        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
     }
 
 }

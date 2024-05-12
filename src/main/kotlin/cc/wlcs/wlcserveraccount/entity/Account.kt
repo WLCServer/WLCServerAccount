@@ -3,6 +3,10 @@ package cc.wlcs.wlcserveraccount.entity
 import cc.wlcs.wlcserveraccount.WLCServerAccount
 import cc.wlcs.wlcserveraccount.database.Account
 import cc.wlcs.wlcserveraccount.database.Accounts.accounts
+import cc.wlcs.wlcserveraccount.database.Warnings.warning
+import cc.wlcs.wlcserveraccount.database.Warnings.warnings
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.velocitypowered.api.proxy.Player
 import net.kyori.adventure.text.Component
 import org.ktorm.dsl.*
@@ -509,15 +513,45 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
         }
     }
 
-    fun isOnline(): Boolean {
-        var player = Optional.empty<Player>()
-        if (wid != null) {
-            player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
-        } else if (name != null) {
-            player = WLCServerAccount.instance.proxyServer.getPlayer(name)
-        } else if (uuid != null) {
-            player = WLCServerAccount.instance.proxyServer.getPlayer(uuid)
+    fun getWarning(): JsonObject? {
+        return WLCServerAccount.database.warnings.find { it.wid eq getWid() }?.warning
+            ?.let { Gson().fromJson(it, JsonObject::class.java) }
+    }
+
+    fun addWarning(reason: String): Boolean {
+        val warning = getWarning() ?: JsonObject()
+        val newWarning = JsonObject().apply {
+            addProperty("time", LocalDateTime.now().format(WLCServerAccount.dateTimeFormatter))
+            addProperty("reason", reason)
         }
+        warning.add((warning.size() + 1).toString(), newWarning)
+        val account = WLCServerAccount.database.warnings.find { it.wid eq getWid() }
+            ?: throw NullPointerException("The account does not exist")
+        account.warning = warning.toString()
+        account.flushChanges()
+        return true
+    }
+
+    fun removeWarning(id: Int): Boolean {
+        getWarning()?.remove(id.toString()) ?: throw NullPointerException("The account does not have any warnings")
+        val account = WLCServerAccount.database.warnings.find { it.wid eq getWid() }
+            ?: throw NullPointerException("The account does not exist")
+        account.warning = warning.toString()
+        account.flushChanges()
+        return true
+    }
+
+    fun removeWarning(id: String): Boolean {
+        getWarning()?.remove(id) ?: throw NullPointerException("The account does not have any warnings")
+        val account = WLCServerAccount.database.warnings.find { it.wid eq getWid() }
+            ?: throw NullPointerException("The account does not exist")
+        account.warning = warning.toString()
+        account.flushChanges()
+        return true
+    }
+
+    fun isOnline(): Boolean {
+        val player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
         return if (player.isPresent) {
             player.get().isActive
         } else {
