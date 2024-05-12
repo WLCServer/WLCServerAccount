@@ -108,7 +108,10 @@ class AccountInv(private val player: Player) {
             ChatElement.of(
                 WLCServerAccount.miniMessage.deserialize(
                     lang.guiRegisterTimeItemName()
-                        .replace("%register_time%", account.getRegisterTime().toString())
+                        .replace(
+                            "%register_time%",
+                            account.getRegisterTime().format(WLCServerAccount.dateTimeFormatter)
+                        )
                 )
             )
         )
