@@ -28,7 +28,7 @@ class AccountCommand : SimpleCommand {
                         player.sendMessage(
                             WLCServerAccount.miniMessage.deserialize(
                                 WLCServerAccount.langConfig.getConfigData().infoCommand()
-                                    .replace("%wid%", account.getId().toString())
+                                    .replace("%wid%", account.getWid().toString())
                                     .replace("%name%", account.getPlayerName())
                                     .replace("%uuid%", account.getPlayerUniqueId().toString())
                                     .replace("%gender%", account.getGender())

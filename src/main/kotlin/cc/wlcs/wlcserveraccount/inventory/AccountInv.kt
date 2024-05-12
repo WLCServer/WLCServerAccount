@@ -28,7 +28,7 @@ class AccountInv(private val player: Player) {
             ChatElement.of(
                 WLCServerAccount.miniMessage.deserialize(
                     lang.guiWidItemName()
-                        .replace("%wid%", account.getId().toString())
+                        .replace("%wid%", account.getWid().toString())
                 )
             )
         )

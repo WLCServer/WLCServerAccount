@@ -7,7 +7,7 @@ import org.ktorm.schema.*
 object Accounts : Table<Account>("account") {
 
     val Database.accounts get() = this.sequenceOf(Accounts)
-    val id = int("id").primaryKey().bindTo { it.id }
+    val wid = int("wid").primaryKey().bindTo { it.wid }
     val name = varchar("name").bindTo { it.name }
     val uuid = varchar("uuid").bindTo { it.uuid }
     val gender = varchar("gender").bindTo { it.gender }

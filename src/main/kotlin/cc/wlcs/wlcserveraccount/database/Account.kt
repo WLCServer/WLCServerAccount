@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 interface Account : Entity<Account> {
 
     companion object : Entity.Factory<Account>()
-    val id: Int
+    val wid: Int
     var name: String
     var uuid: String
     var gender: String?
