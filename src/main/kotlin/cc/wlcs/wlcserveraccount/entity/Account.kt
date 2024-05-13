@@ -3,6 +3,7 @@ package cc.wlcs.wlcserveraccount.entity
 import cc.wlcs.wlcserveraccount.WLCServerAccount
 import cc.wlcs.wlcserveraccount.database.Account
 import cc.wlcs.wlcserveraccount.database.Accounts.accounts
+import cc.wlcs.wlcserveraccount.database.Bans.bans
 import cc.wlcs.wlcserveraccount.database.Warnings.warning
 import cc.wlcs.wlcserveraccount.database.Warnings.warnings
 import com.google.gson.Gson
@@ -550,6 +551,24 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
         return true
     }
 
+    fun isBanned(): Boolean {
+        return WLCServerAccount.database.bans.find { it.wid eq getWid() }?.banned ?: false
+    }
+
+    fun ban(reason: String): Boolean {
+        val account = WLCServerAccount.database.bans.find { it.wid eq getWid() }
+            ?: throw NullPointerException("The account does not exist")
+        account.banned = true
+        account.time = LocalDateTime.now()
+        account.reason = reason
+        account.flushChanges()
+        return true
+    }
+
+    fun unban(): Boolean {
+        return WLCServerAccount.database.bans.find { it.wid eq getWid() }?.delete() == 1
+    }
+
     fun isOnline(): Boolean {
         val player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
         return if (player.isPresent) {
@@ -560,14 +579,7 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
     }
 
     fun disconnect(component: Component): Boolean {
-        var player = Optional.empty<Player>()
-        if (wid != null) {
-            player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
-        } else if (name != null) {
-            player = WLCServerAccount.instance.proxyServer.getPlayer(name)
-        } else if (uuid != null) {
-            player = WLCServerAccount.instance.proxyServer.getPlayer(uuid)
-        }
+        val player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
         if (player.isPresent) {
             player.get().disconnect(component)
             return true
