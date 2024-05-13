@@ -12,7 +12,7 @@ interface MainConfig {
     fun MysqlUrl(): String
 
     @ConfKey("mysql.user")
-    @DefaultString("root")
+    @DefaultString("wlcserveraccount")
     @Order(20)
     fun MysqlUser(): String
 
