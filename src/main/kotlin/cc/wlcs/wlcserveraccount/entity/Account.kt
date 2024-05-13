@@ -3,7 +3,9 @@ package cc.wlcs.wlcserveraccount.entity
 import cc.wlcs.wlcserveraccount.WLCServerAccount
 import cc.wlcs.wlcserveraccount.database.Account
 import cc.wlcs.wlcserveraccount.database.Accounts.accounts
+import cc.wlcs.wlcserveraccount.database.Ban
 import cc.wlcs.wlcserveraccount.database.Bans.bans
+import cc.wlcs.wlcserveraccount.database.Warning
 import cc.wlcs.wlcserveraccount.database.Warnings.warning
 import cc.wlcs.wlcserveraccount.database.Warnings.warnings
 import com.google.gson.Gson
@@ -15,7 +17,6 @@ import org.ktorm.entity.add
 import org.ktorm.entity.find
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.Optional
 import java.util.UUID
 
 data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUID? = null) {
@@ -45,6 +46,12 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
                 registerIp = player.remoteAddress.hostName
                 registerTime = LocalDateTime.now()
                 lastLoginTime = LocalDateTime.now()
+            })
+        WLCServerAccount.database.warnings
+            .add(Warning {})
+        WLCServerAccount.database.bans
+            .add(Ban {
+                banned = false
             })
         return true
     }
