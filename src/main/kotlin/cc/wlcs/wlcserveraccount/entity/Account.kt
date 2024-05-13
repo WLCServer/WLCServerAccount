@@ -48,9 +48,14 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
                 lastLoginTime = LocalDateTime.now()
             })
         WLCServerAccount.database.warnings
-            .add(Warning {})
+            .add(Warning {
+                name = player.username
+                uuid = player.uniqueId.toString()
+            })
         WLCServerAccount.database.bans
             .add(Ban {
+                name = player.username
+                uuid = player.uniqueId.toString()
                 banned = false
             })
         return true
