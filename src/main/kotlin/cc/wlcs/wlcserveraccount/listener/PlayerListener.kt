@@ -14,7 +14,11 @@ class PlayerListener {
         val player = event.player
         val account = Account(uuid = player.uniqueId)
         if (account.exist()) {
-            account.setLastLoginTime(LocalDateTime.now())
+            if (account.isBanned()) {
+                TODO("Banned kick message")
+            } else {
+                account.setLastLoginTime(LocalDateTime.now())
+            }
         } else {
             account.add(player)
             val lang = WLCServerAccount.langConfig.getConfigData()
@@ -30,7 +34,9 @@ class PlayerListener {
     fun onDisconnect(event: DisconnectEvent) {
         val player = event.player
         val account = Account(uuid = player.uniqueId)
-        account.setLastLogoutTime(LocalDateTime.now())
+        if (account.exist()) {
+            account.setLastLogoutTime(LocalDateTime.now())
+        }
     }
 
 }
