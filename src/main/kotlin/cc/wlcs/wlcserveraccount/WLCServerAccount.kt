@@ -65,9 +65,9 @@ class WLCServerAccount {
         langConfig.reloadConfig()
 
         // Set database info
-        dataSource.setURL(mainConfig.getConfigData().MysqlUrl())
-        dataSource.user = mainConfig.getConfigData().MysqlUser()
-        dataSource.password = mainConfig.getConfigData().MysqlPassword()
+        dataSource.setURL(mainConfig.getConfigData().mysqlUrl())
+        dataSource.user = mainConfig.getConfigData().mysqlUser()
+        dataSource.password = mainConfig.getConfigData().mysqlPassword()
 
         // Connect database and set log level
         database = Database.connect(dataSource, logger = ConsoleLogger(threshold = LogLevel.WARN))

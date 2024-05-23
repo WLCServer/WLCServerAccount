@@ -9,15 +9,15 @@ interface MainConfig {
     @ConfKey("mysql.url")
     @DefaultString("jdbc:mysql://localhost:3306/wlcserveraccount")
     @Order(10)
-    fun MysqlUrl(): String
+    fun mysqlUrl(): String
 
     @ConfKey("mysql.user")
     @DefaultString("wlcserveraccount")
     @Order(20)
-    fun MysqlUser(): String
+    fun mysqlUser(): String
 
     @ConfKey("mysql.password")
     @DefaultString("password")
     @Order(30)
-    fun MysqlPassword(): String
+    fun mysqlPassword(): String
 }
