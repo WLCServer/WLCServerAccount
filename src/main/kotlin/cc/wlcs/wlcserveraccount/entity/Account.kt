@@ -3,6 +3,7 @@ package cc.wlcs.wlcserveraccount.entity
 import cc.wlcs.wlcserveraccount.WLCServerAccount
 import cc.wlcs.wlcserveraccount.database.Account
 import cc.wlcs.wlcserveraccount.database.Accounts.accounts
+import cc.wlcs.wlcserveraccount.database.Accounts.get
 import cc.wlcs.wlcserveraccount.database.Ban
 import cc.wlcs.wlcserveraccount.database.Bans.bans
 import cc.wlcs.wlcserveraccount.database.Warning
@@ -22,19 +23,8 @@ import java.util.UUID
 data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUID? = null) {
 
     fun exist(): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         } != null
     }
 
@@ -78,452 +68,179 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
     }
 
     fun getPlayerName(): String {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> return name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.name ?: throw NullPointerException("The account does not exist")
     }
 
     fun setPlayerName(playerName: String): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.name = playerName
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.name = playerName
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getPlayerUniqueId(): UUID {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> return uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return UUID.fromString(WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.uuid ?: throw NullPointerException("The account does not exist"))
     }
 
     fun setPlayerUniqueId(playerUniqueId: UUID): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.uuid = playerUniqueId.toString()
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.uuid = playerUniqueId.toString()
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getGender(): String {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.gender ?: throw NullPointerException("The account does not exist")
     }
 
     fun setGender(gender: String): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.gender = gender
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.gender = gender
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getQQ(): String? {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.qq
     }
 
     fun setQQ(qq: String): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.qq = qq
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.qq = qq
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getEmail(): String? {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.email
     }
 
     fun setEmail(email: String): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.email = email
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.email = email
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getPhone(): String? {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.phone
     }
 
     fun setPhone(phone: String): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.phone = phone
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.phone = phone
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getBirthday(): LocalDate? {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.birthday
     }
 
     fun setBirthday(birthday: LocalDate): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.birthday = birthday
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.birthday = birthday
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getRegisterIp(): String {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.registerIp ?: throw NullPointerException("The account does not exist")
     }
 
     fun setRegisterIp(ip: String): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.registerIp = ip
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.registerIp = ip
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getRegisterTime(): LocalDateTime {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.registerTime ?: throw NullPointerException("The account does not exist")
     }
 
     fun setRegisterTime(time: LocalDateTime): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.registerTime = time
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.registerTime = time
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getLastLoginTime(): LocalDateTime {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.lastLoginTime ?: throw NullPointerException("The account does not exist")
     }
 
     fun setLastLoginTime(time: LocalDateTime): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.lastLoginTime = time
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.lastLoginTime = time
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getLastLogoutTime(): LocalDateTime? {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
         return WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
+            it.wid eq getWid()
         }?.lastLogoutTime
     }
 
     fun setLastLogoutTime(time: LocalDateTime): Boolean {
-        val identifier = when {
-            wid != null -> wid
-            name != null -> name
-            uuid != null -> uuid
-            else -> throw NullPointerException("id, name and uuid cannot all be null")
-        }
-        val account = WLCServerAccount.database.accounts.find {
-            when (identifier) {
-                is Int -> it.wid eq identifier
-                is String -> it.name eq identifier
-                is UUID -> it.uuid eq identifier.toString()
-                else -> throw NullPointerException("id, name and uuid cannot all be null")
-            }
-        }
-        return if (account != null) {
-            account.lastLogoutTime = time
-            account.flushChanges()
-            true
-        } else {
-            throw NullPointerException("The account does not exist")
-        }
+        WLCServerAccount.database.accounts.find {
+            it.wid eq getWid()
+        }?.also {
+            it.lastLogoutTime = time
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
+        return true
     }
 
     fun getWarning(): JsonObject? {
@@ -538,28 +255,28 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
             addProperty("reason", reason)
         }
         warning.add((warning.size() + 1).toString(), newWarning)
-        val account = WLCServerAccount.database.warnings.find { it.wid eq getWid() }
-            ?: throw NullPointerException("The account does not exist")
-        account.warning = warning.toString()
-        account.flushChanges()
+        WLCServerAccount.database.warnings.find { it.wid eq getWid() }?.also {
+            it.warning = warning.toString()
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
         return true
     }
 
     fun removeWarning(id: Int): Boolean {
         getWarning()?.remove(id.toString()) ?: throw NullPointerException("The account does not have any warnings")
-        val account = WLCServerAccount.database.warnings.find { it.wid eq getWid() }
-            ?: throw NullPointerException("The account does not exist")
-        account.warning = warning.toString()
-        account.flushChanges()
+        WLCServerAccount.database.warnings.find { it.wid eq getWid() }?.also {
+            it.warning = warning.toString()
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
         return true
     }
 
     fun removeWarning(id: String): Boolean {
         getWarning()?.remove(id) ?: throw NullPointerException("The account does not have any warnings")
-        val account = WLCServerAccount.database.warnings.find { it.wid eq getWid() }
-            ?: throw NullPointerException("The account does not exist")
-        account.warning = warning.toString()
-        account.flushChanges()
+        WLCServerAccount.database.warnings.find { it.wid eq getWid() }?.also {
+            it.warning = warning.toString()
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
         return true
     }
 
@@ -568,12 +285,12 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
     }
 
     fun ban(reason: String): Boolean {
-        val account = WLCServerAccount.database.bans.find { it.wid eq getWid() }
-            ?: throw NullPointerException("The account does not exist")
-        account.banned = true
-        account.time = LocalDateTime.now()
-        account.reason = reason
-        account.flushChanges()
+        WLCServerAccount.database.bans.find { it.wid eq getWid() }?.also {
+            it.banned = true
+            it.time = LocalDateTime.now()
+            it.reason = reason
+            it.flushChanges()
+        } ?: throw NullPointerException("The account does not exist")
         return true
     }
 
@@ -594,6 +311,16 @@ data class Account(val wid: Int? = null, val name: String? = null, val uuid: UUI
         val player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
         if (player.isPresent) {
             player.get().disconnect(component)
+            return true
+        } else {
+            throw NullPointerException("The account does not exist")
+        }
+    }
+
+    fun disconnect(disconnectText: String): Boolean {
+        val player = WLCServerAccount.instance.proxyServer.getPlayer(getPlayerUniqueId())
+        if (player.isPresent) {
+            player.get().disconnect(Component.text(disconnectText))
             return true
         } else {
             throw NullPointerException("The account does not exist")

@@ -35,13 +35,13 @@ class WLCServerAccount {
         lateinit var langConfig: ConfigManager<LangConfig>
         private val dataSource = MysqlConnectionPoolDataSource()
         lateinit var database: Database
-        lateinit var miniMessage: MiniMessage
         lateinit var dateTimeFormatter: DateTimeFormatter
+        val miniMessage = MiniMessage.miniMessage()
     }
 
     lateinit var logger: Logger
     lateinit var proxyServer: ProxyServer
-    lateinit var dataDirectory: Path
+    private lateinit var dataDirectory: Path
 
     @Inject
     fun WLCServerAccount(
@@ -57,26 +57,20 @@ class WLCServerAccount {
     @Subscribe
     fun onProxyInitialization(event: ProxyInitializeEvent) {
         instance = this
-
-        // Load config
-        mainConfig = ConfigManager.create(dataDirectory, "config.yml", MainConfig::class.java)
-        mainConfig.reloadConfig()
-        langConfig = ConfigManager.create(dataDirectory, "lang.yml", LangConfig::class.java)
-        langConfig.reloadConfig()
-
-        // Set database info
-        dataSource.setURL(mainConfig.getConfigData().mysqlUrl())
-        dataSource.user = mainConfig.getConfigData().mysqlUser()
-        dataSource.password = mainConfig.getConfigData().mysqlPassword()
-
-        // Connect database and set log level
+        mainConfig = ConfigManager.create(dataDirectory, "config.yml", MainConfig::class.java).also {
+            it.reloadConfig()
+        }
+        langConfig = ConfigManager.create(dataDirectory, "lang.yml", LangConfig::class.java).also {
+            it.reloadConfig()
+        }
+        dataSource.also {
+            it.setURL(mainConfig.getConfigData().mysqlUrl())
+            it.user = mainConfig.getConfigData().mysqlUser()
+            it.password = mainConfig.getConfigData().mysqlPassword()
+        }
         database = Database.connect(dataSource, logger = ConsoleLogger(threshold = LogLevel.WARN))
-
         proxyServer.eventManager.register(this, PlayerListener())
         proxyServer.commandManager.register("account", AccountCommand())
-        miniMessage = MiniMessage.miniMessage()
-
-        // Set default time formatter
         dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     }
