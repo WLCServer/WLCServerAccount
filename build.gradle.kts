@@ -28,7 +28,7 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:8.4.0")
     implementation("org.ktorm:ktorm-core:4.0.0")
     compileOnly("dev.simplix:protocolize-api:2.4.0")
-    implementation("cn.hutool:hutool-core:5.8.28")
+    implementation("cn.hutool:hutool-core:5.8.31")
 }
 
 tasks.test {
