@@ -26,7 +26,7 @@ dependencies {
     implementation("space.arim.dazzleconf:dazzleconf-ext-snakeyaml:1.3.0-M2")
     // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:8.4.0")
-    implementation("org.ktorm:ktorm-core:4.0.0")
+    implementation("org.ktorm:ktorm-core:4.1.1")
     compileOnly("dev.simplix:protocolize-api:2.4.0")
     implementation("cn.hutool:hutool-core:5.8.28")
 }
